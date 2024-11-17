@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Install Dependencies') {
+            steps {
+                // Ensure Python dependencies are installed
+                sh 'pip install -r requirements.txt'
+            }
+        }
+        stage('Train Model') {
+            steps {
+                // Run the training script
+                sh 'python train_model.py'
+            }
+        }
+        stage('Validate Model') {
+            steps {
+                // Run the validation script
+                sh 'python validate_model.py'
+            }
+        }
+        stage('Archive Artifacts') {
+            steps {
+                // Save the trained model and logs as artifacts
+                archiveArtifacts artifacts: 'model/trained_model.pkl', allowEmptyArchive: true
+            }
+        }
+    }
+}
